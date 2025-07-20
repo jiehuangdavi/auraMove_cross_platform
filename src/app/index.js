@@ -10,7 +10,6 @@ export default function App() {
         data = {exercises}
         renderItem = {({item}) => <ExerciseListItem item={item} />}
       />
-  
       <StatusBar style="auto" />
     </View>
   );
@@ -22,6 +21,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'ghostwhite',
     justifyContent: 'center',
     padding: 20,
-    paddingTop: 50,
+    paddingTop: 20,
   },
 });
