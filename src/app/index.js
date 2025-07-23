@@ -1,16 +1,16 @@
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View, FlatList } from 'react-native';
 import exercises from '../../assets/Workouts Assets/data/exercises.json';
 import ExerciseListItem from '../components/ExerciseListItem.jsx';
-//import 'expo-router/entry';
-export default function App() {
+
+export default function ExercisesScreen() {
   return (
     <View style={styles.container}>
       <FlatList
-        data = {exercises}
-        renderItem = {({item}) => <ExerciseListItem item={item} />}
+        data={exercises}
+        contentContainerStyle={{ gap: 10 }}
+        keyExtractor={(item, index) => item.name + index}
+        renderItem={({ item }) => <ExerciseListItem item={item} />}
       />
-      <StatusBar style="auto" />
     </View>
   );
 }
@@ -20,7 +20,5 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'ghostwhite',
     justifyContent: 'center',
-    padding: 20,
-    paddingTop: 20,
   },
 });

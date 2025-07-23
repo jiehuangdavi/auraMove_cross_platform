@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import exercises from '../../assets/Workouts Assets/data/exercises.json';
 import {useState} from 'react';
-
+import NewSetInput from '../components/newSetInputs';
 export default function ExerciseDetailsScreen() {
   const { name } = useLocalSearchParams();
 
@@ -29,7 +29,7 @@ export default function ExerciseDetailsScreen() {
         {isInstructionExpanded ? 'See Less' : 'See More'}
       </Text>
       </View>
-
+      <NewSetInput/>
     </ScrollView>
   );
 }
