@@ -1,35 +1,71 @@
-import { View, Text, StyleSheet, TextInput, Button} from 'react-native';
+import { View, Text, StyleSheet, TextInput, Button, Alert } from 'react-native';
 import { useState } from 'react';
 
-const NewSetInput = () => {
-    const [reps, setReps] = useState('');
-    const [weight, setWeight] = useState('');
+const API_ENDPOINT_URL = 'http://localhost:5000/exercises';
 
-    const addSet = () => {
-        console.warn('Add Set', reps, weight);
-        // save data in database
+const NewSetInput = ({ exerciseName }) => {
+  const [reps, setReps] = useState('');
+  const [weight, setWeight] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const addSet = async () => {
+    if (!exerciseName || !reps.trim() || !weight.trim()) {
+      Alert.alert('Validation Error', 'Please fill in all fields.');
+      return;
+    }
+
+    const exerciseData = {
+      exercise: exerciseName,
+      reps: parseInt(reps, 10),
+      weight: parseFloat(weight),
+    };
+
+    setIsLoading(true);
+    try {
+      const response = await fetch(API_ENDPOINT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(exerciseData),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        Alert.alert('Success', 'Set saved successfully!');
         setReps('');
         setWeight('');
-    };
+      } else {
+        Alert.alert('Error', result.message || 'An error occurred while saving the data.');
+      }
+    } catch (error) {
+      console.error('Submission Error:', error);
+      Alert.alert('Network Error', 'Unable to connect to the server. Is the backend running?');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Log Set</Text>
       <View style={styles.row}>
-        <TextInput 
-            value = {reps} 
-            onChangeText={setReps} 
-            placeholder="Reps" 
-            style={styles.input} 
-            keyboardType="numeric" 
+        <TextInput
+          value={reps}
+          onChangeText={setReps}
+          placeholder="Reps"
+          style={styles.input}
+          keyboardType="numeric"
+          editable={!isLoading}
         />
-        <TextInput 
-            value = {weight} 
-            onChangeText={setWeight} 
-            placeholder="Weight" 
-            style={styles.input} 
-            keyboardType="numeric" 
+        <TextInput
+          value={weight}
+          onChangeText={setWeight}
+          placeholder="Weight"
+          style={styles.input}
+          keyboardType="numeric"
+          editable={!isLoading}
         />
-        <Button title="Add" onPress={ addSet} />   
+        <Button title={isLoading ? 'Adding...' : 'Add'} onPress={addSet} disabled={isLoading} />
       </View>
     </View>
   );
