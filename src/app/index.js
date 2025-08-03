@@ -17,7 +17,7 @@ export default function HomeScreen() {
         </Animated.Text>
 
         <Animated.View entering={FadeInDown.delay(400).springify()} exiting={FadeOut}>
-          <Link href="/exercises" asChild>
+          <Link href="/fitnessView/exercises" asChild>
             <Pressable style={styles.button}>
               <Text style={styles.buttonText}>Get Started</Text>
             </Pressable>
