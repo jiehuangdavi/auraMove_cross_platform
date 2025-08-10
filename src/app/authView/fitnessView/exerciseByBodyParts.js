@@ -1,9 +1,9 @@
 import {View, Text, Image, FlatList, StyleSheet, TouchableOpacity, ScrollView, ActivityIndicator} from 'react-native'
 import React, { useEffect, useState } from 'react';
 import { useLocalSearchParams, Link, Stack } from 'expo-router';
-import { exerciseData, exerciseImages } from '../../api/data/localData.js';
+import { exerciseData, exerciseImages } from '../../../api/data/localData.js';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { bodyParts } from '../../constants/image_path.js';
+import { bodyParts } from '@constants/image_path.js';
 
 export default function ExerciseByBodyPart() {
     const item = useLocalSearchParams(); // get the parameter that was passed to this function during navigation
@@ -92,7 +92,7 @@ export default function ExerciseByBodyPart() {
                             <View style={styles.paginationContainer}>
                                 <TouchableOpacity
                                     style={[styles.paginationButton, currentPage === 1 && styles.disabledButton]}
-                                    onPress={() => setCurrentPage(prev => prev - 1)}
+                                    onPress={() => setCurrentPage(currentPage => currentPage - 1)}
                                     disabled={currentPage === 1}
                                 >
                                     <Text style={styles.paginationText}>Previous</Text>
@@ -100,7 +100,7 @@ export default function ExerciseByBodyPart() {
                                 <Text style={styles.pageInfo}>{`Page ${currentPage} of ${totalPages}`}</Text>
                                 <TouchableOpacity
                                     style={[styles.paginationButton, currentPage === totalPages && styles.disabledButton]}
-                                    onPress={() => setCurrentPage(prev => prev + 1)}
+                                    onPress={() => setCurrentPage(currentPage => currentPage + 1)}
                                     disabled={currentPage === totalPages}
                                 >
                                     <Text style={styles.paginationText}>Next</Text>
@@ -118,7 +118,7 @@ export default function ExerciseByBodyPart() {
 const ExerciseCard = ({item}) => {
     return (
         <Link
-              href={{ pathname: '/fitnessView/exerciseDetails', params: item }}
+              href={{ pathname: '/authView/fitnessView/exerciseDetails', params: item }}
               asChild
         >
         <TouchableOpacity style={styles.card}>

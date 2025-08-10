@@ -1,11 +1,27 @@
 import { View, Text, StyleSheet, Pressable, ImageBackground } from 'react-native';
-import { Link } from 'expo-router';
+import { useRouter } from 'expo-router';
 import Animated, { FadeInDown, FadeOut } from 'react-native-reanimated';
+import { useAuth } from './auth/authContext';
+import { useEffect } from 'react';
+
 export default function HomeScreen() {
+  const { user, isLoading } = useAuth();
+  const router = useRouter();
+
+  // Show loading while checking auth state
+  if (isLoading) {
+    return null;
+  }
+
+  // If user is authenticated, don't show this screen (shouldn't happen with new layout, but keeping as safety)
+  if (user) {
+    return null;
+  }
+
   return (
     <ImageBackground
       style={styles.container}
-      source={require('../../assets/images/welcome.png')}
+      source={require('@assets/images/welcome.png')}
       resizeMode="cover"
     >
       <View style={styles.content}>
@@ -17,11 +33,21 @@ export default function HomeScreen() {
         </Animated.Text>
 
         <Animated.View entering={FadeInDown.delay(400).springify()} exiting={FadeOut}>
-          <Link href="/fitnessView/exercises" asChild>
-            <Pressable style={styles.button}>
-              <Text style={styles.buttonText}>Get Started</Text>
-            </Pressable>
-          </Link>
+          <Pressable style={styles.button} onPress={() => router.push('/auth/login')}>
+            <Text style={styles.buttonText}>Get Started</Text>
+          </Pressable>
+        </Animated.View>
+
+        <Animated.View entering={FadeInDown.delay(500).springify()} exiting={FadeOut}>
+          <Pressable style={[styles.button, styles.secondaryButton]} onPress={() => router.push('/auth/register')}>
+            <Text style={[styles.buttonText, styles.secondaryButtonText]}>Create Account</Text>
+          </Pressable>
+        </Animated.View>
+
+        <Animated.View entering={FadeInDown.delay(600).springify()} exiting={FadeOut}>
+          <Pressable style={styles.linkButton} onPress={() => router.push('/auth/login')}>
+            <Text style={styles.linkText}>Already have an account? Sign In</Text>
+          </Pressable>
         </Animated.View>
       </View>
     </ImageBackground>
@@ -64,10 +90,28 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.5)',
+    marginBottom: 15,
   },
   buttonText: {
     color: 'white',
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  secondaryButton: {
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    borderColor: 'rgba(255, 255, 255, 0.8)',
+  },
+  secondaryButtonText: {
+    color: 'white',
+  },
+  linkButton: {
+    marginTop: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+  },
+  linkText: {
+    color: 'rgba(255, 255, 255, 0.9)',
+    fontSize: 16,
+    textDecorationLine: 'underline',
   },
 });

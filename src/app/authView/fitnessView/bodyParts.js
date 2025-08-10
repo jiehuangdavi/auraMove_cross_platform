@@ -1,9 +1,12 @@
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { bodyParts } from '../../constants/image_path';
+import { bodyParts } from '@constants/image_path';
 
-import { Link, Stack } from 'expo-router';
+import { useRouter, Stack } from 'expo-router';
+
 export default function BodyParts(){
+    const router = useRouter();
+    
     return (
         <>
         <Stack.Screen
@@ -33,12 +36,16 @@ export default function BodyParts(){
 }
 
 const BodyPartCard = ({item, index}) => {
+    const router = useRouter();
+    
     return (
-        <Link
-              href={{ pathname: '/fitnessView/exerciseByBodyParts', params: { name: item.name } }}
-              asChild
+        <TouchableOpacity 
+            style={styles.card}
+            onPress={() => router.push({
+                pathname: '/authView/fitnessView/exerciseByBodyParts', 
+                params: { name: item.name }
+            })}
         >
-        <TouchableOpacity style={styles.card}>
             <Image
                 source={item.image}
                 resizeMode="cover"
@@ -47,7 +54,6 @@ const BodyPartCard = ({item, index}) => {
 
             <Text style={styles.cardText}>{item.name}</Text>
         </TouchableOpacity>
-        </Link>
     )
 }
 const styles = StyleSheet.create({

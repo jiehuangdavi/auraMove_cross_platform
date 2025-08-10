@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
 import React from 'react';
 import { useLocalSearchParams, Stack } from 'expo-router';
-import { exerciseImages } from '../../api/data/localData';
+import { exerciseImages } from '../../../api/data/localData';
 
 export default function ExerciseDetails() {
     const item = useLocalSearchParams();
